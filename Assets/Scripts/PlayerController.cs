@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 swipeDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            rb.velocity = swipeDirection.normalized * bounceForce;
+            rb.linearVelocity = swipeDirection.normalized * bounceForce;
         }
     }
 
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Block"))
         {
-            rb.velocity = Vector2.up * bounceForce;
+            rb.linearVelocity = Vector2.up * bounceForce;
         }
     }
 }
