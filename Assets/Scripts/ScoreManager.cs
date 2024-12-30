@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // Ensure this namespace is included for UI elements like Text
+using UnityEngine.UI; // Ensure this namespace is included for UI components
 
 public class ScoreManager : MonoBehaviour
 {
