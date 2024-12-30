@@ -1,37 +1,29 @@
-
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float dashForce = 500f;
-    public int maxSwipes = 10;
-    private int currentSwipes;
+    public float bounceForce = 10f;
     private Rigidbody2D rb;
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        currentSwipes = maxSwipes;
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.touchCount > 0 && currentSwipes > 0)
+        if (Input.GetMouseButtonDown(0))
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Ended)
-            {
-                Vector2 swipeDirection = touch.deltaPosition.normalized;
-                Dash(swipeDirection);
-                currentSwipes--;
-            }
+            Vector2 swipeDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            rb.velocity = swipeDirection.normalized * bounceForce;
         }
     }
 
-    private void Dash(Vector2 direction)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        rb.velocity = Vector2.zero;
-        rb.AddForce(direction * dashForce);
+        if (collision.gameObject.CompareTag("Block"))
+        {
+            rb.velocity = Vector2.up * bounceForce;
+        }
     }
 }
