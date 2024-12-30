@@ -21,9 +21,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+<<<<<<< main
         if (collision.gameObject.CompareTag("Block"))
         {
             rb.velocity = Vector2.up * bounceForce;
         }
+=======
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(direction * dashForce);
+>>>>>>> origin/main
     }
 }
