@@ -6,21 +6,19 @@ public class BlockManager : MonoBehaviour
     public Transform player; // Reference to the player's Transform
     public float verticalSpacing = 3f; // Vertical distance between blocks
     public float horizontalRange = 2f; // Horizontal range for block placement
+    private GameObject currentBlock; // The current block the player is interacting with
     private float lastBlockY = -4f; // Y position of the last spawned block
 
     void Start()
     {
-        // Spawn initial blocks
-        for (int i = 0; i < 5; i++) // Spawning initial blocks for gameplay
-        {
-            SpawnBlock();
-        }
+        // Spawn the first block
+        SpawnBlock();
     }
 
     void Update()
     {
-        // Check if a new block needs to be spawned
-        if (player.position.y > lastBlockY - verticalSpacing * 3) // Keep a few blocks ahead
+        // Continuously check if the player is standing on the current block
+        if (currentBlock != null && player.position.y > currentBlock.transform.position.y + 0.5f)
         {
             SpawnBlock();
         }
@@ -28,13 +26,12 @@ public class BlockManager : MonoBehaviour
 
     void SpawnBlock()
     {
-        // Calculate random horizontal position and vertical placement
+        // Calculate the position for the new block
         float randomX = Random.Range(-horizontalRange, horizontalRange);
         float nextY = lastBlockY + verticalSpacing;
 
-        // Spawn the block at the calculated position
         Vector3 spawnPosition = new Vector3(randomX, nextY, 0);
-        Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
+        currentBlock = Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
 
         // Update the Y position of the last spawned block
         lastBlockY = nextY;
