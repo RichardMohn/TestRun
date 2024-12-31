@@ -1058,6 +1058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startScreenCanvas: {fileID: 58399997}
+  player: {fileID: 1948513385}
 --- !u!4 &1702881462
 Transform:
   m_ObjectHideFlags: 0
