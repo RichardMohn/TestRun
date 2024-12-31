@@ -337,7 +337,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 917995110}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameOverTrigger, Assembly-CSharp
         m_MethodName: RetryGame
         m_Mode: 1
