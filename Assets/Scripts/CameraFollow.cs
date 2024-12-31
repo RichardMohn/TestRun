@@ -10,7 +10,8 @@ public class CameraFollow : MonoBehaviour
     {
         if (player != null)
         {
-            Vector3 desiredPosition = new Vector3(0, player.position.y, transform.position.z) + offset;
+            // Follow the player’s Y-axis only, keeping the ground stable
+            Vector3 desiredPosition = new Vector3(transform.position.x, player.position.y + offset.y, transform.position.z);
             Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
             transform.position = smoothedPosition;
         }
