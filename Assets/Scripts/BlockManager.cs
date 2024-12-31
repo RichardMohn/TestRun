@@ -2,23 +2,27 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    public GameObject blockPrefab; // Assign your block prefab in the Inspector
-    public Transform player; // Reference to the player's Transform
-    public float verticalSpacing = 3f; // Vertical distance between blocks
-    public float horizontalRange = 2f; // Horizontal range for block placement
-    private GameObject currentBlock; // The current block the player is interacting with
-    private float lastBlockY = -4f; // Y position of the last spawned block
+    public GameObject blockPrefab; // Reference to the block prefab
+    public Transform player; // Reference to the player
+    public ScoreManager scoreManager; // Reference to the ScoreManager
+
+    public float spawnHeight = 5f; // Distance above the player where new blocks spawn
+    public float minBlockWidth = 1f; // Minimum width of a block
+    public float maxBlockWidth = 3f; // Maximum width of a block
+
+    private Vector3 lastBlockPosition; // Tracks the last block's position
 
     void Start()
     {
-        // Spawn the first block
+        // Initialize the first block
+        lastBlockPosition = new Vector3(0, player.position.y - 2f, 0);
         SpawnBlock();
     }
 
     void Update()
     {
-        // Continuously check if the player is standing on the current block
-        if (currentBlock != null && player.position.y > currentBlock.transform.position.y + 0.5f)
+        // Continuously check if new blocks need to spawn
+        if (player.position.y + spawnHeight > lastBlockPosition.y)
         {
             SpawnBlock();
         }
@@ -26,14 +30,20 @@ public class BlockManager : MonoBehaviour
 
     void SpawnBlock()
     {
-        // Calculate the position for the new block
-        float randomX = Random.Range(-horizontalRange, horizontalRange);
-        float nextY = lastBlockY + verticalSpacing;
+        // Randomize block width and position
+        float blockWidth = Random.Range(minBlockWidth, maxBlockWidth);
+        Vector3 blockPosition = new Vector3(Random.Range(-2f, 2f), lastBlockPosition.y + Random.Range(2f, 3f), 0);
 
-        Vector3 spawnPosition = new Vector3(randomX, nextY, 0);
-        currentBlock = Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
+        // Spawn the block
+        GameObject newBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+        newBlock.transform.localScale = new Vector3(blockWidth, newBlock.transform.localScale.y, newBlock.transform.localScale.z);
 
-        // Update the Y position of the last spawned block
-        lastBlockY = nextY;
+        // Track the new block's position
+        lastBlockPosition = blockPosition;
+
+        // Attach scoring logic to the block
+        BlockLogic blockLogic = newBlock.AddComponent<BlockLogic>();
+        blockLogic.scoreManager = scoreManager;
+        blockLogic.player = player;
     }
 }
