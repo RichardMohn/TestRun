@@ -2,43 +2,40 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    public GameObject blockPrefab; // Reference to the block prefab
-    public float spawnInterval = 2f; // Time interval between spawning blocks
-    public float blockSpeed = 2f; // Speed of the block's movement
-    public float minHeight = 1f; // Minimum height difference between blocks
-    public float maxHeight = 3f; // Maximum height difference between blocks
+    public GameObject blockPrefab; // Assign the Block Prefab in the Inspector
+    public Transform player; // Reference to the player's Transform
+    public float blockSpawnInterval = 2f; // Distance between blocks
+    public float horizontalRange = 2f; // Horizontal range for block placement
+    public float verticalSpacing = 3f; // Vertical spacing between blocks
 
-    private float timer; // Timer to track when to spawn blocks
+    private float lastBlockY = -4; // Tracks the Y position of the last spawned block
+
+    void Start()
+    {
+        // Spawn the first block above the ground
+        SpawnBlock();
+    }
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= spawnInterval)
+        // Continuously check if a new block needs to be spawned
+        if (player.position.y > lastBlockY - blockSpawnInterval)
         {
             SpawnBlock();
-            timer = 0f; // Reset the timer
         }
     }
 
     void SpawnBlock()
     {
-        // Generate random X position for the block
-        float randomX = Random.Range(-2f, 2f);
+        // Randomize the horizontal position within range
+        float randomX = Random.Range(-horizontalRange, horizontalRange);
+        float nextY = lastBlockY + verticalSpacing;
 
-        // Generate a random height offset for vertical spacing
-        float randomY = Random.Range(minHeight, maxHeight);
+        // Spawn the block at the calculated position
+        Vector3 spawnPosition = new Vector3(randomX, nextY, 0);
+        Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
 
-        // Calculate the spawn position
-        Vector3 spawnPosition = new Vector3(randomX, transform.position.y + randomY, 0);
-
-        // Instantiate the block at the calculated position
-        GameObject block = Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
-
-        // Assign speed to the block's movement
-        if (block.GetComponent<BlockMovement>() != null)
-        {
-            block.GetComponent<BlockMovement>().speed = blockSpeed;
-        }
+        // Update the Y position of the last block
+        lastBlockY = nextY;
     }
 }
