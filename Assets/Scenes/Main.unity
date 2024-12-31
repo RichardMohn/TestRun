@@ -1587,8 +1587,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockPrefab: {fileID: 2597568111831531012, guid: 431a9da1040e01640866aff343264288, type: 3}
   player: {fileID: 1948513390}
-  verticalSpacing: 3
-  horizontalRange: 2
+  scoreManager: {fileID: 1583831118}
+  spawnHeight: 5
+  minBlockWidth: 1
+  maxBlockWidth: 3
 --- !u!1 &1702881460
 GameObject:
   m_ObjectHideFlags: 0
