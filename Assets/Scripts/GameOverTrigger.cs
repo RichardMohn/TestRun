@@ -7,7 +7,8 @@ public class GameOverTrigger : MonoBehaviour
         // Check if the player hits the ground
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.GameOver(); // Call the GameOver method in the GameManager
+            // Call the GameOver method from GameManager
+            GameManager.instance.GameOver();
         }
     }
 }
