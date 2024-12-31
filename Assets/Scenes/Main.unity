@@ -271,7 +271,7 @@ GameObject:
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!212 &331816412
 SpriteRenderer:
@@ -337,9 +337,9 @@ Transform:
   m_GameObject: {fileID: 331816411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: -4.91, z: 0}
+  m_LocalPosition: {x: 0.03, y: -4.88, z: 0}
   m_LocalScale: {x: 6.700196, y: 0.81293374, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917995105}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72feee5aebeaf4f4ab4264918a7432f1, type: 3}
   m_Name: 
@@ -1348,9 +1348,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 6}
   - {fileID: 917995108}
-  - {fileID: 331816413}
   - {fileID: 58400001}
   - {fileID: 1948513390}
   - {fileID: 518130546}
   - {fileID: 1702881462}
   - {fileID: 1687448597}
+  - {fileID: 331816413}
