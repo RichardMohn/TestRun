@@ -3,14 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class GameOverTrigger : MonoBehaviour
 {
-    public GameObject gameOverCanvas; // Assign the GameOverCanvas in the Inspector
-    public Transform player; // Reference to the Player's Transform
+    public GameObject gameOverCanvas; // Reference to the Game Over Canvas
+    public Transform player; // Reference to the Player Transform
 
-    private float cameraBottomY;
+    private float cameraBottomY; // Bottom of the camera's visible area
+    private float cameraLeftX; // Left of the camera's visible area
+    private float cameraRightX; // Right of the camera's visible area
 
     void Start()
     {
-        // Ensure the Game Over Canvas is hidden at the start
+        // Hide the Game Over Canvas at the start
         if (gameOverCanvas != null)
         {
             gameOverCanvas.SetActive(false);
@@ -19,11 +21,16 @@ public class GameOverTrigger : MonoBehaviour
 
     void Update()
     {
-        // Calculate the bottom of the camera
-        cameraBottomY = Camera.main.transform.position.y - Camera.main.orthographicSize;
+        // Calculate camera boundaries
+        Camera cam = Camera.main;
+        cameraBottomY = cam.transform.position.y - cam.orthographicSize;
+        cameraLeftX = cam.transform.position.x - cam.aspect * cam.orthographicSize;
+        cameraRightX = cam.transform.position.x + cam.aspect * cam.orthographicSize;
 
-        // Check if the player has fallen below the screen
-        if (player.position.y < cameraBottomY)
+        // Check if the player is out of bounds
+        if (player.position.y < cameraBottomY || 
+            player.position.x < cameraLeftX || 
+            player.position.x > cameraRightX)
         {
             TriggerGameOver();
         }
@@ -31,7 +38,7 @@ public class GameOverTrigger : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the player hits the ground
+        // Trigger Game Over when the player hits the ground
         if (collision.gameObject.CompareTag("Ground"))
         {
             TriggerGameOver();
@@ -52,7 +59,7 @@ public class GameOverTrigger : MonoBehaviour
 
     public void RetryGame()
     {
-        // Restart the game by reloading the current scene
+        // Reload the current scene to restart the game
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
