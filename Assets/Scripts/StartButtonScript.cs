@@ -3,22 +3,35 @@ using UnityEngine;
 public class StartButtonScript : MonoBehaviour
 {
     public GameObject startScreenCanvas; // Reference to the Start Screen Canvas
+    public GameObject player; // Reference to the Player GameObject
 
     void Start()
     {
         // Pause the game at the start
-        Time.timeScale = 0; // Pauses the game, freezing all movement
+        Time.timeScale = 0;
+
+        // Hide the Player at the start
+        if (player != null)
+        {
+            player.SetActive(false);
+        }
     }
 
     public void StartGame()
     {
-        // Hide the Start Screen
-        if (startScreenCanvas != null)
+        // Show the Player when the game starts
+        if (player != null)
         {
-            startScreenCanvas.SetActive(false); // Deactivates the canvas
+            player.SetActive(true);
         }
 
         // Resume the game
-        Time.timeScale = 1; // Resumes the game
+        Time.timeScale = 1;
+
+        // Hide the Start Screen Canvas
+        if (startScreenCanvas != null)
+        {
+            startScreenCanvas.SetActive(false);
+        }
     }
 }
