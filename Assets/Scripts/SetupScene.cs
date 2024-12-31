@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SetupScene : MonoBehaviour
+public class SceneSetup : MonoBehaviour
 {
-    public GameObject playerPrefab; // Assign Player Prefab if available
-    public GameObject blockPrefab; // Assign Block Prefab
+    public GameObject blockPrefab; // Assign the Block Prefab in the Inspector
 
     [ContextMenu("Setup Scene")]
     public void SetupGameObjects()
@@ -26,24 +25,26 @@ public class SetupScene : MonoBehaviour
         ground.AddComponent<BoxCollider2D>();
 
         // Create Player
-        if (playerPrefab != null)
-        {
-            Instantiate(playerPrefab, new Vector3(0, -3, 0), Quaternion.identity).name = "Player";
-        }
-        else
-        {
-            GameObject player = new GameObject("Player");
-            player.AddComponent<SpriteRenderer>().color = Color.red;
-            player.transform.localScale = new Vector3(1, 1, 1);
-            player.transform.position = new Vector3(0, -3, 0);
-            player.AddComponent<CircleCollider2D>();
-            player.AddComponent<Rigidbody2D>();
-        }
+        GameObject player = new GameObject("Player");
+        SpriteRenderer playerRenderer = player.AddComponent<SpriteRenderer>();
+        playerRenderer.color = Color.red; // Assign a red color for visibility
+        player.transform.localScale = new Vector3(1, 1, 1);
+        player.transform.position = new Vector3(0, -3, 0);
+
+        // Add Player Physics Components
+        player.AddComponent<CircleCollider2D>();
+        Rigidbody2D rb = player.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 2f; // Adjust gravity for realistic jumping
+
+        // Add Player Movement Script
+        PlayerController playerController = player.AddComponent<PlayerController>();
+        playerController.jumpForce = 5f;
 
         // Create Block Manager
         GameObject blockManager = new GameObject("BlockManager");
         BlockManager blockManagerScript = blockManager.AddComponent<BlockManager>();
         blockManagerScript.blockPrefab = blockPrefab; // Assign the Block Prefab dynamically
+        blockManagerScript.player = player.transform; // Reference the player for spawning logic
 
         // Create UI Canvas
         GameObject canvas = new GameObject("Canvas");
