@@ -1172,7 +1172,6 @@ GameObject:
   - component: {fileID: 917995108}
   - component: {fileID: 917995107}
   - component: {fileID: 917995106}
-  - component: {fileID: 917995109}
   - component: {fileID: 917995110}
   - component: {fileID: 917995111}
   m_Layer: 0
@@ -1256,22 +1255,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &917995109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917995105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72feee5aebeaf4f4ab4264918a7432f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1948513390}
-  smoothSpeed: 0.2
-  offset: {x: 0, y: 0, z: 0}
-  delayThreshold: 2
 --- !u!114 &917995110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,9 +1278,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 917995105}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a16a1930548626c48bd9ad4167b08eeb, type: 3}
+  m_Script: {fileID: 11500000, guid: 72feee5aebeaf4f4ab4264918a7432f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1948513390}
+  smoothSpeed: 0.2
+  offset: {x: 4.4, y: 0, z: 0}
+  stopFollowingYThreshold: -5
 --- !u!1 &1491248622
 GameObject:
   m_ObjectHideFlags: 0
