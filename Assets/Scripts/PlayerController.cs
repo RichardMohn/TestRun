@@ -22,6 +22,6 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         // Apply upward force
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
     }
 }
