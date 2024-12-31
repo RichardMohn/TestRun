@@ -5,6 +5,12 @@ public class SceneSetup : MonoBehaviour
 {
     public GameObject blockPrefab; // Assign the Block Prefab in the Inspector
 
+    // Automatically run the setup when the game starts
+    void Start()
+    {
+        SetupGameObjects();
+    }
+
     [ContextMenu("Setup Scene")]
     public void SetupGameObjects()
     {
