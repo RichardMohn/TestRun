@@ -336,8 +336,8 @@ Transform:
   m_GameObject: {fileID: 331816411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: -4.85, z: 0}
-  m_LocalScale: {x: 7.9733644, y: 1.0154133, z: 1}
+  m_LocalPosition: {x: 0.02, y: -4.94, z: 0}
+  m_LocalScale: {x: 19.255743, y: 1.0154414, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -835,7 +835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1948513390}
   smoothSpeed: 0.125
-  offset: {x: 0, y: 2, z: 0}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1 &1491248622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,7 +1053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687448597}
-  - component: {fileID: 1687448596}
+  - component: {fileID: 1687448598}
   m_Layer: 0
   m_Name: BlockManager
   m_TagString: Untagged
@@ -1061,22 +1061,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1687448596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687448595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 291140d6680d0ab4aa9d029c8ee05d22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockPrefab: {fileID: 2597568111831531012, guid: 431a9da1040e01640866aff343264288, type: 3}
-  player: {fileID: 1948513390}
-  verticalSpacing: 3
-  horizontalRange: 2
 --- !u!4 &1687448597
 Transform:
   m_ObjectHideFlags: 0
@@ -1092,6 +1076,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1687448598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687448595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291140d6680d0ab4aa9d029c8ee05d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockPrefab: {fileID: 2597568111831531012, guid: 431a9da1040e01640866aff343264288, type: 3}
+  player: {fileID: 1948513390}
+  verticalSpacing: 3
+  horizontalRange: 2
 --- !u!1 &1702881460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,10 +1216,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 2
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 0.8
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1308,7 +1308,7 @@ Transform:
   m_GameObject: {fileID: 1948513385}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 2.6, z: 1}
+  m_LocalPosition: {x: 0.04, y: -4.38, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

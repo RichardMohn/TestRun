@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1095973049277115448}
   - component: {fileID: 4181643892921585196}
   - component: {fileID: 4377297110751515268}
-  - component: {fileID: 4122169917052091927}
+  - component: {fileID: 1926006462078408286}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 2597568111831531012}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.74, y: -1.31, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.5000125, z: 0.6}
+  m_LocalPosition: {x: 1.5572, y: -1.453, z: 0}
+  m_LocalScale: {x: 1.496966, y: 0.2139032, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -135,7 +135,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4122169917052091927
+--- !u!114 &1926006462078408286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,5 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abcf044929796aa489c24c23d8fc859c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  moveRange: 2
+  baseSpeed: 1
+  speedIncrease: 0.1
+  range: 2
