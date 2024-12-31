@@ -2,24 +2,25 @@ using UnityEngine;
 
 public class BlockManager : MonoBehaviour
 {
-    public GameObject blockPrefab; // Assign the Block Prefab in the Inspector
+    public GameObject blockPrefab; // Assign your block prefab in the Inspector
     public Transform player; // Reference to the player's Transform
-    public float blockSpawnInterval = 2f; // Distance between blocks
+    public float verticalSpacing = 3f; // Vertical distance between blocks
     public float horizontalRange = 2f; // Horizontal range for block placement
-    public float verticalSpacing = 3f; // Vertical spacing between blocks
-
-    private float lastBlockY = -4; // Tracks the Y position of the last spawned block
+    private float lastBlockY = -4f; // Y position of the last spawned block
 
     void Start()
     {
-        // Spawn the first block above the ground
-        SpawnBlock();
+        // Spawn initial blocks
+        for (int i = 0; i < 5; i++) // Spawning initial blocks for gameplay
+        {
+            SpawnBlock();
+        }
     }
 
     void Update()
     {
-        // Continuously check if a new block needs to be spawned
-        if (player.position.y > lastBlockY - blockSpawnInterval)
+        // Check if a new block needs to be spawned
+        if (player.position.y > lastBlockY - verticalSpacing * 3) // Keep a few blocks ahead
         {
             SpawnBlock();
         }
@@ -27,7 +28,7 @@ public class BlockManager : MonoBehaviour
 
     void SpawnBlock()
     {
-        // Randomize the horizontal position within range
+        // Calculate random horizontal position and vertical placement
         float randomX = Random.Range(-horizontalRange, horizontalRange);
         float nextY = lastBlockY + verticalSpacing;
 
@@ -35,7 +36,7 @@ public class BlockManager : MonoBehaviour
         Vector3 spawnPosition = new Vector3(randomX, nextY, 0);
         Instantiate(blockPrefab, spawnPosition, Quaternion.identity);
 
-        // Update the Y position of the last block
+        // Update the Y position of the last spawned block
         lastBlockY = nextY;
     }
 }
