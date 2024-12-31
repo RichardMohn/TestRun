@@ -1283,8 +1283,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1948513390}
   smoothSpeed: 0.2
-  offset: {x: 4.4, y: 0, z: 0}
-  stopFollowingYThreshold: -5
+  offset: {x: 0, y: 0, z: 0}
+  stopFollowingYThreshold: -6
 --- !u!1 &1491248622
 GameObject:
   m_ObjectHideFlags: 0
