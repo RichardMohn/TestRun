@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player; // Reference to the Player's Transform
+    public Transform player; // Reference to the player's Transform
     public float smoothSpeed = 0.2f; // Smoothness of the camera movement
     public Vector3 offset; // Offset for positioning the camera
     public float stopFollowingYThreshold = -5f; // Y position where the camera stops following
 
-    private bool stopFollowing = false;
+    private float initialCameraY; // The starting Y position of the camera
+    private bool stopFollowing = false; // Tracks whether to stop following the player
+
+    void Start()
+    {
+        // Store the initial Y position of the camera
+        initialCameraY = transform.position.y;
+    }
 
     void LateUpdate()
     {
@@ -20,10 +27,10 @@ public class CameraFollow : MonoBehaviour
                 return;
             }
 
-            // Smoothly follow the player on the Y-axis only
-            Vector3 desiredPosition = new Vector3(transform.position.x, player.position.y + offset.y, transform.position.z);
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-            transform.position = smoothedPosition;
+            // Smoothly follow the player, only moving the camera upward
+            float targetY = Mathf.Max(initialCameraY, player.position.y + offset.y);
+            Vector3 desiredPosition = new Vector3(transform.position.x, targetY, transform.position.z);
+            transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         }
     }
 }
