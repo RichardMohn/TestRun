@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float bounceForce = 10f;
+    public float jumpForce = 5f;
     private Rigidbody2D rb;
 
     void Start()
@@ -12,18 +12,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Jump"))
         {
-            Vector2 swipeDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            rb.linearVelocity = swipeDirection.normalized * bounceForce;
+            Jump();
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void Jump()
     {
-        if (collision.gameObject.CompareTag("Block"))
-        {
-            rb.linearVelocity = Vector2.up * bounceForce;
-        }
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 }
