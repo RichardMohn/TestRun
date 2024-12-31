@@ -1,21 +1,22 @@
 using UnityEngine;
-using UnityEngine.UI; // Ensure this namespace is included for UI components
+using TMPro; // Import TextMeshPro namespace
 
 public class ScoreManager : MonoBehaviour
 {
-    public Text scoreText; // Reference to the UI Text component for displaying the score
-    private int score = 0;
+    public TextMeshProUGUI scoreText; // Reference to the UI text
+    public int score = 0; // Player's current score
 
-    public void AddScore()
+    public void AddScore(int amount)
     {
-        score++;
+        score += amount;
+        UpdateScoreDisplay();
+    }
+
+    private void UpdateScoreDisplay()
+    {
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score;
-        }
-        else
-        {
-            Debug.LogWarning("Score Text is not assigned in the Inspector!");
+            scoreText.text = "Score: " + score.ToString();
         }
     }
 }
