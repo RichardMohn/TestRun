@@ -201,27 +201,13 @@ public class {scriptName} : MonoBehaviour
 
     void ValidateAndAttachScripts()
     {
-        // Validate BlockManager
         FindOrCreateGameObject("BlockManager", obj => obj.AddComponent<BlockManager>());
-
-        // Validate GameController
-        FindOrCreateGameObject("GameController", obj =>
+        FindOrCreateGameObject("GameController", obj => 
         {
             if (!obj.TryGetComponent<GameController>(out GameController controller))
             {
                 controller = obj.AddComponent<GameController>();
             }
-            Debug.Log("GameController script validated and attached to GameController GameObject.");
-        });
-
-        // Validate PlayerController
-        FindOrCreateGameObject("Player", obj =>
-        {
-            if (!obj.TryGetComponent<PlayerController>(out PlayerController controller))
-            {
-                controller = obj.AddComponent<PlayerController>();
-            }
-            Debug.Log("PlayerController script validated and attached to Player GameObject.");
         });
     }
 
@@ -232,11 +218,6 @@ public class {scriptName} : MonoBehaviour
         {
             obj = new GameObject(name);
             setupAction?.Invoke(obj);
-            Debug.Log($"Created GameObject: {name}");
-        }
-        else
-        {
-            Debug.Log($"GameObject {name} already exists.");
         }
         return obj;
     }
@@ -246,19 +227,10 @@ public class {scriptName} : MonoBehaviour
         GameObject mainMenuCanvas = CreateCanvas("MainMenuCanvas");
 
         // Game Title
-        CreateText(mainMenuCanvas.transform, "GameTitle", "Ball Block", new Vector2(0, 450), 80, (TMPro.FontStyles)FontStyle.Bold, Color.white);
+        CreateText(mainMenuCanvas.transform, "GameTitle", "Ball Block", new Vector2(0, 450), 80, TMPro.FontStyles.Bold, Color.white);
 
         // Buttons
-        GameObject singlePlayerButton = CreateButton(mainMenuCanvas.transform, "SinglePlayerButton", "Single Player", new Vector2(0, 200));
-        GameObject multiplayerButton = CreateButton(mainMenuCanvas.transform, "MultiplayerButton", "Multiplayer", new Vector2(0, 100));
-        GameObject settingsButton = CreateButton(mainMenuCanvas.transform, "SettingsButton", "Settings", new Vector2(0, 0));
-        GameObject helpCenterButton = CreateButton(mainMenuCanvas.transform, "HelpCenterButton", "Help Center", new Vector2(0, -100));
-
-        // Button functionality
-        singlePlayerButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateSinglePlayerMenu"));
-        multiplayerButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateMultiplayerMenu"));
-        settingsButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateSettingsMenu"));
-        helpCenterButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateHelpMenu"));
+        CreateButton(mainMenuCanvas.transform, "SinglePlayerButton", "Single Player", new Vector2(0, 200));
     }
 
     GameObject CreateCanvas(string name)
@@ -267,12 +239,7 @@ public class {scriptName} : MonoBehaviour
         Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.main;
-
-        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
-        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-        scaler.referenceResolution = new Vector2(1920, 1080);
-        scaler.matchWidthOrHeight = 0.5f;
-
+        canvasObject.AddComponent<CanvasScaler>();
         canvasObject.AddComponent<GraphicRaycaster>();
         return canvasObject;
     }
@@ -284,45 +251,29 @@ public class {scriptName} : MonoBehaviour
 
         Button button = buttonObject.AddComponent<Button>();
         Image image = buttonObject.AddComponent<Image>();
-        image.color = new Color(0.2f, 0.6f, 0.8f);
-
         RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(300, 80);
         rectTransform.anchoredPosition = position;
 
         GameObject textObject = new GameObject("ButtonText");
         textObject.transform.SetParent(buttonObject.transform);
-
-        TextMeshProUGUI buttonTextComponent = textObject.AddComponent<TextMeshProUGUI>();
-        buttonTextComponent.text = buttonText;
-        buttonTextComponent.fontSize = 24;
-        buttonTextComponent.alignment = TextAlignmentOptions.Center;
-        buttonTextComponent.color = Color.white;
-
-        RectTransform textRect = textObject.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(300, 80);
-        textRect.anchoredPosition = Vector2.zero;
+        TextMeshProUGUI buttonText = textObject.AddComponent<TextMeshProUGUI>();
+        buttonText.text = buttonText;
+        buttonText.fontSize = 24;
+        buttonText.alignment = TextAlignmentOptions.Center;
 
         return buttonObject;
-    }
-
-    void ExecutePlaceholderScript(string scriptName)
-    {
-        Debug.Log($"{scriptName} called. Placeholder functionality.");
     }
 
     void CreateText(Transform parent, string name, string content, Vector2 position, int fontSize, TMPro.FontStyles fontStyle, Color color)
     {
         GameObject textObject = new GameObject(name);
         textObject.transform.SetParent(parent);
-
         TextMeshProUGUI text = textObject.AddComponent<TextMeshProUGUI>();
         text.text = content;
         text.fontSize = fontSize;
         text.fontStyle = fontStyle;
         text.alignment = TextAlignmentOptions.Center;
-        text.color = color;
-
         RectTransform rectTransform = textObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(800, 100);
         rectTransform.anchoredPosition = position;
