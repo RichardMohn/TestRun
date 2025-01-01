@@ -13,7 +13,7 @@ public class SceneSetup : MonoBehaviour
         if (hasRun) return;
         hasRun = true;
 
-        // Ensure necessary scripts exist
+        // Ensure all necessary scripts exist
         EnsureScriptsExist();
 
         // Remove duplicate cameras and GameObjects
@@ -26,7 +26,7 @@ public class SceneSetup : MonoBehaviour
         // Validate and attach scripts
         ValidateAndAttachScripts();
 
-        // Create Main Menu
+        // Create the main menu
         CreateMainMenu();
     }
 
@@ -34,6 +34,9 @@ public class SceneSetup : MonoBehaviour
     {
         EnsureScriptExists("GameController", GetGameControllerScriptContent());
         EnsureScriptExists("PlayerController", GetPlayerControllerScriptContent());
+        EnsureScriptExists("CreateSinglePlayerMenu", GetPlaceholderScriptContent("CreateSinglePlayerMenu"));
+        EnsureScriptExists("CreateSettingsMenu", GetPlaceholderScriptContent("CreateSettingsMenu"));
+        EnsureScriptExists("CreateHelpMenu", GetPlaceholderScriptContent("CreateHelpMenu"));
     }
 
     void EnsureScriptExists(string scriptName, string scriptContent)
@@ -131,6 +134,21 @@ public class PlayerController : MonoBehaviour
 ";
     }
 
+    string GetPlaceholderScriptContent(string scriptName)
+    {
+        return $@"
+using UnityEngine;
+
+public class {scriptName} : MonoBehaviour
+{
+    public void Execute()
+    {
+        Debug.Log(""{scriptName} is a placeholder script. Please implement functionality as needed."");
+    }
+}
+";
+    }
+
     void RemoveDuplicateCameras()
     {
         Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsSortMode.None);
@@ -205,15 +223,6 @@ public class PlayerController : MonoBehaviour
             }
             Debug.Log("PlayerController script validated and attached to Player GameObject.");
         });
-
-        // Validate ScoreManager
-        FindOrCreateGameObject("ScoreManager", obj => obj.AddComponent<ScoreManager>());
-
-        // Validate BlockMovement
-        FindOrCreateGameObject("Blocks", obj => obj.AddComponent<BlockMovement>());
-
-        // Validate RetryButton
-        FindOrCreateGameObject("RetryButton", obj => obj.AddComponent<GameOverTrigger>());
     }
 
     GameObject FindOrCreateGameObject(string name, System.Action<GameObject> setupAction)
@@ -245,20 +254,11 @@ public class PlayerController : MonoBehaviour
         GameObject settingsButton = CreateButton(mainMenuCanvas.transform, "SettingsButton", "Settings", new Vector2(0, 0));
         GameObject helpCenterButton = CreateButton(mainMenuCanvas.transform, "HelpCenterButton", "Help Center", new Vector2(0, -100));
 
-        // Wallet Display
-        CreateText(mainMenuCanvas.transform, "WalletDisplay", "Wallet: $50.00", new Vector2(-850, -450), 24, (TMPro.FontStyles)FontStyle.Normal, Color.white);
-
-        // Player Profile Icon
-        GameObject profileIcon = CreateButton(mainMenuCanvas.transform, "ProfileIcon", "Profile", new Vector2(-950, -450));
-        profileIcon.GetComponent<Button>().onClick.AddListener(CreatePlayerProfileMenu);
-
         // Button functionality
-        singlePlayerButton.GetComponent<Button>().onClick.AddListener(CreateSinglePlayerMenu);
-        multiplayerButton.GetComponent<Button>().onClick.AddListener(() => LoadScene("MultiplayerScene"));
-        settingsButton.GetComponent<Button>().onClick.AddListener(CreateSettingsMenu);
-        helpCenterButton.GetComponent<Button>().onClick.AddListener(CreateHelpCenterMenu);
-
-        AddBackground(mainMenuCanvas, new Color(0.1f, 0.1f, 0.2f));
+        singlePlayerButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateSinglePlayerMenu"));
+        multiplayerButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateMultiplayerMenu"));
+        settingsButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateSettingsMenu"));
+        helpCenterButton.GetComponent<Button>().onClick.AddListener(() => ExecutePlaceholderScript("CreateHelpMenu"));
     }
 
     GameObject CreateCanvas(string name)
@@ -306,6 +306,11 @@ public class PlayerController : MonoBehaviour
         return buttonObject;
     }
 
+    void ExecutePlaceholderScript(string scriptName)
+    {
+        Debug.Log($"{scriptName} called. Placeholder functionality.");
+    }
+
     void CreateText(Transform parent, string name, string content, Vector2 position, int fontSize, TMPro.FontStyles fontStyle, Color color)
     {
         GameObject textObject = new GameObject(name);
@@ -321,55 +326,5 @@ public class PlayerController : MonoBehaviour
         RectTransform rectTransform = textObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(800, 100);
         rectTransform.anchoredPosition = position;
-    }
-
-    void AddBackground(GameObject parent, Color color)
-    {
-        GameObject background = new GameObject("Background");
-        background.transform.SetParent(parent.transform);
-
-        Image image = background.AddComponent<Image>();
-        image.color = color;
-
-        RectTransform rectTransform = background.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(1920, 1080);
-        rectTransform.anchoredPosition = Vector2.zero;
-    }
-
-    void CreatePlayerProfileMenu()
-    {
-        GameObject profileCanvas = CreateCanvas("PlayerProfileCanvas");
-
-        // Wallet Info
-        CreateText(profileCanvas.transform, "WalletInfo", "Wallet: $50.00", new Vector2(0, 300), 40, (TMPro.FontStyles)FontStyle.Normal, Color.white);
-
-        // Manage Wallet Button
-        GameObject manageWalletButton = CreateButton(profileCanvas.transform, "ManageWalletButton", "Manage Wallet", new Vector2(0, 150));
-        manageWalletButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            Debug.Log("Manage Wallet Placeholder");
-        });
-
-        // Achievements Button
-        GameObject achievementsButton = CreateButton(profileCanvas.transform, "AchievementsButton", "Achievements", new Vector2(0, 50));
-        achievementsButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            Debug.Log("Achievements Placeholder");
-        });
-
-        // Back to Main Menu Button
-        GameObject backButton = CreateButton(profileCanvas.transform, "BackButton", "Back to Main Menu", new Vector2(0, -150));
-        backButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            Destroy(profileCanvas);
-            CreateMainMenu();
-        });
-
-        AddBackground(profileCanvas, new Color(0.15f, 0.15f, 0.15f));
-    }
-
-    void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
     }
 }
