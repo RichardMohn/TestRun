@@ -257,10 +257,10 @@ public class {scriptName} : MonoBehaviour
 
         GameObject textObject = new GameObject("ButtonText");
         textObject.transform.SetParent(buttonObject.transform);
-        TextMeshProUGUI buttonText = textObject.AddComponent<TextMeshProUGUI>();
-        buttonText.text = buttonText;
-        buttonText.fontSize = 24;
-        buttonText.alignment = TextAlignmentOptions.Center;
+        TextMeshProUGUI buttonTextComponent = textObject.AddComponent<TextMeshProUGUI>();
+        buttonTextComponent.text = buttonText;
+        buttonTextComponent.fontSize = 24;
+        buttonTextComponent.alignment = TextAlignmentOptions.Center;
 
         return buttonObject;
     }
