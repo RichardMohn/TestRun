@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.IO;
 
+// Suppress all warnings and errors in this script
+#pragma warning disable
+
 public class SceneSetup : MonoBehaviour
 {
     private static bool hasRun = false;
@@ -279,3 +282,6 @@ public class {scriptName} : MonoBehaviour
         rectTransform.anchoredPosition = position;
     }
 }
+
+// Re-enable warnings after this script
+#pragma warning restore
