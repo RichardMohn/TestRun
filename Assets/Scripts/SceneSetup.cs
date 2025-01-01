@@ -13,21 +13,14 @@ public class SceneSetup : MonoBehaviour
         if (hasRun) return;
         hasRun = true;
 
-        // Step 1: Setup required scripts and objects
         EnsureScriptsExist();
-
-        // Step 2: Remove duplicate cameras and GameObjects
         RemoveDuplicateCameras();
         RemoveDuplicateGameObjects();
-
-        // Step 3: Setup the camera
         SetupCamera();
-
-        // Step 4: Create Main Menu UI
         CreateMainMenu();
+        CreatePlayer();
     }
 
-    // Ensure required scripts exist
     private void EnsureScriptsExist()
     {
         EnsureScriptExists("GameController", GetGameControllerScriptContent());
@@ -106,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Tap or click to jump
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
@@ -114,7 +107,10 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        rb.velocity = Vector2.up * jumpForce;
+        if (rb != null)
+        {
+            rb.velocity = Vector2.up * jumpForce;
+        }
     }
 }
 ";
@@ -157,6 +153,8 @@ public class PlayerController : MonoBehaviour
             mainCamera = cameraObject.AddComponent<Camera>();
             mainCamera.orthographic = true;
             mainCamera.orthographicSize = 5;
+            mainCamera.clearFlags = CameraClearFlags.SolidColor;
+            mainCamera.backgroundColor = Color.black;
         }
         Debug.Log("Camera setup complete.");
     }
@@ -175,7 +173,12 @@ public class PlayerController : MonoBehaviour
         Canvas canvas = canvasObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
         canvas.worldCamera = Camera.main;
-        canvasObject.AddComponent<CanvasScaler>();
+
+        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080);
+        scaler.matchWidthOrHeight = 0.5f;
+
         canvasObject.AddComponent<GraphicRaycaster>();
         return canvasObject;
     }
@@ -185,10 +188,12 @@ public class PlayerController : MonoBehaviour
         GameObject buttonObject = new GameObject(name);
         buttonObject.transform.SetParent(parent);
 
-        Button button = buttonObject.AddComponent<Button>();
-        RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
+        RectTransform rectTransform = buttonObject.AddComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(300, 80);
         rectTransform.anchoredPosition = position;
+
+        Button button = buttonObject.AddComponent<Button>();
+        buttonObject.AddComponent<Image>();
 
         GameObject textObject = new GameObject("ButtonText");
         textObject.transform.SetParent(buttonObject.transform);
@@ -196,6 +201,10 @@ public class PlayerController : MonoBehaviour
         buttonTextComponent.text = buttonText;
         buttonTextComponent.fontSize = 24;
         buttonTextComponent.alignment = TextAlignmentOptions.Center;
+
+        RectTransform textRect = textObject.GetComponent<RectTransform>();
+        textRect.sizeDelta = new Vector2(300, 80);
+        textRect.anchoredPosition = Vector2.zero;
 
         return buttonObject;
     }
@@ -212,5 +221,13 @@ public class PlayerController : MonoBehaviour
         RectTransform rectTransform = text.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(800, 100);
         rectTransform.anchoredPosition = position;
+    }
+
+    private void CreatePlayer()
+    {
+        GameObject player = new GameObject("Player");
+        player.AddComponent<Rigidbody2D>();
+        player.AddComponent<CircleCollider2D>();
+        player.AddComponent<PlayerController>();
     }
 }
