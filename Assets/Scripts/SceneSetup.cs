@@ -4,9 +4,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.IO;
 
-// Suppress all warnings and errors in this script
-#pragma warning disable
-
 public class SceneSetup : MonoBehaviour
 {
     private static bool hasRun = false;
@@ -16,20 +13,12 @@ public class SceneSetup : MonoBehaviour
         if (hasRun) return;
         hasRun = true;
 
-        // Ensure all necessary scripts exist
+        // Run setup methods
         EnsureScriptsExist();
-
-        // Remove duplicate cameras and GameObjects
         RemoveDuplicateCameras();
         RemoveDuplicateGameObjects();
-
-        // Setup the camera
         SetupCamera();
-
-        // Validate and attach scripts
         ValidateAndAttachScripts();
-
-        // Create the main menu
         CreateMainMenu();
     }
 
@@ -167,11 +156,7 @@ public class {scriptName} : MonoBehaviour
 
     private void RemoveDuplicateGameObjects()
     {
-        string[] objectsToCheck = {
-            "MainMenuCanvas", "PlayerProfileCanvas", "BlockManager", "GameController",
-            "ScoreManager", "RetryButton", "GameOverScreen", "Blocks",
-            "StartScreen", "HelpCenterCanvas"
-        };
+        string[] objectsToCheck = { "MainMenuCanvas", "PlayerProfileCanvas", "BlockManager", "GameController", "ScoreManager", "RetryButton", "GameOverScreen", "Blocks", "StartScreen", "HelpCenterCanvas" };
 
         foreach (string name in objectsToCheck)
         {
@@ -194,12 +179,7 @@ public class {scriptName} : MonoBehaviour
             mainCamera.orthographic = true;
             mainCamera.orthographicSize = 5;
         }
-
         Debug.Log("Camera setup complete.");
-
-#if UNITY_EDITOR
-        Screen.SetResolution(1920, 1080, false);
-#endif
     }
 
     private void ValidateAndAttachScripts()
@@ -228,11 +208,7 @@ public class {scriptName} : MonoBehaviour
     private void CreateMainMenu()
     {
         GameObject mainMenuCanvas = CreateCanvas("MainMenuCanvas");
-
-        // Game Title
         CreateText(mainMenuCanvas.transform, "GameTitle", "Ball Block", new Vector2(0, 450), 80, TMPro.FontStyles.Bold, Color.white);
-
-        // Buttons
         CreateButton(mainMenuCanvas.transform, "SinglePlayerButton", "Single Player", new Vector2(0, 200));
     }
 
@@ -253,7 +229,6 @@ public class {scriptName} : MonoBehaviour
         buttonObject.transform.SetParent(parent);
 
         Button button = buttonObject.AddComponent<Button>();
-        Image image = buttonObject.AddComponent<Image>();
         RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(300, 80);
         rectTransform.anchoredPosition = position;
@@ -277,11 +252,8 @@ public class {scriptName} : MonoBehaviour
         text.fontSize = fontSize;
         text.fontStyle = fontStyle;
         text.alignment = TextAlignmentOptions.Center;
-        RectTransform rectTransform = textObject.GetComponent<RectTransform>();
+        RectTransform rectTransform = text.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(800, 100);
         rectTransform.anchoredPosition = position;
     }
 }
-
-// Re-enable warnings after this script
-#pragma warning restore
