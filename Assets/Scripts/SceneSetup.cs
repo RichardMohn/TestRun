@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class SceneSetup : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class SceneSetup : MonoBehaviour
     {
         if (hasRun) return;
         hasRun = true;
+
+        // Ensure GameController script exists
+        EnsureGameControllerScript();
 
         // Remove duplicates
         RemoveDuplicateCameras();
@@ -24,6 +28,35 @@ public class SceneSetup : MonoBehaviour
 
         // Create Main Menu
         CreateMainMenu();
+    }
+
+    void EnsureGameControllerScript()
+    {
+        string gameControllerPath = Application.dataPath + "/Scripts/GameController.cs";
+        if (!File.Exists(gameControllerPath))
+        {
+            Directory.CreateDirectory(Application.dataPath + "/Scripts");
+            File.WriteAllText(gameControllerPath, GetGameControllerScript());
+            Debug.Log("GameController script created at: " + gameControllerPath);
+            #if UNITY_EDITOR
+            UnityEditor.AssetDatabase.Refresh();
+            #endif
+        }
+    }
+
+    string GetGameControllerScript()
+    {
+        return @"
+using UnityEngine;
+
+public class GameController : MonoBehaviour
+{
+    void Start()
+    {
+        Debug.Log(""GameController initialized!"");
+    }
+}
+";
     }
 
     void RemoveDuplicateCameras()
@@ -144,36 +177,6 @@ public class SceneSetup : MonoBehaviour
         helpCenterButton.GetComponent<Button>().onClick.AddListener(CreateHelpCenterMenu);
 
         AddBackground(mainMenuCanvas, new Color(0.1f, 0.1f, 0.2f));
-    }
-
-    void CreateSinglePlayerMenu()
-    {
-        GameObject singlePlayerCanvas = CreateCanvas("SinglePlayerCanvas");
-
-        // Title
-        CreateText(singlePlayerCanvas.transform, "SinglePlayerTitle", "Single Player Modes", new Vector2(0, 300), 50, (TMPro.FontStyles)FontStyle.Bold, Color.white);
-
-        // Game Modes
-        GameObject endlessModeButton = CreateButton(singlePlayerCanvas.transform, "EndlessModeButton", "Endless Mode", new Vector2(0, 100));
-        endlessModeButton.GetComponent<Button>().onClick.AddListener(() => LoadScene("EndlessModeScene"));
-
-        // Back Button
-        GameObject backButton = CreateButton(singlePlayerCanvas.transform, "BackButton", "Back", new Vector2(0, -100));
-        backButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            Destroy(singlePlayerCanvas);
-            CreateMainMenu();
-        });
-    }
-
-    void CreateSettingsMenu()
-    {
-        Debug.Log("Settings Menu Placeholder");
-    }
-
-    void CreateHelpCenterMenu()
-    {
-        Debug.Log("Help Center Menu Placeholder");
     }
 
     GameObject CreateCanvas(string name)
