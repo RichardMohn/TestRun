@@ -1,48 +1,54 @@
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance; // Singleton instance of GameManager
-    public GameObject gameOverUI; // Reference to the GameOver UI panel
+    public TextMeshProUGUI highScoreText; // Reference to the High Score Text
+    public TextMeshProUGUI currentScoreText; // Reference to the Current Score Text
+    public int currentScore = 0; // The player's current score
 
-    private void Awake()
+    void Start()
     {
-        // Ensure a single instance of GameManager
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        // Display the high score at the start
+        UpdateHighScoreText();
+    }
+
+    public void AddScore(int amount)
+    {
+        // Update the current score
+        currentScore += amount;
+        UpdateCurrentScoreText();
     }
 
     public void GameOver()
     {
-        // Pause the game
-        Time.timeScale = 0;
-        // Activate the GameOver UI
-        if (gameOverUI != null)
+        // Check and update the high score
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
+
+        if (currentScore > highScore)
         {
-            gameOverUI.SetActive(true);
+            PlayerPrefs.SetInt("HighScore", currentScore);
+            highScore = currentScore;
         }
-        else
+
+        // Update the high score text on the GameOver screen
+        UpdateHighScoreText();
+    }
+
+    private void UpdateHighScoreText()
+    {
+        if (highScoreText != null)
         {
-            Debug.LogWarning("GameOver UI is not assigned in the GameManager!");
+            int highScore = PlayerPrefs.GetInt("HighScore", 0);
+            highScoreText.text = "High Score: " + highScore.ToString();
         }
     }
 
-    public void RestartGame()
+    private void UpdateCurrentScoreText()
     {
-        // Resume the game
-        Time.timeScale = 1;
-        // Deactivate the GameOver UI
-        if (gameOverUI != null)
+        if (currentScoreText != null)
         {
-            gameOverUI.SetActive(false);
+            currentScoreText.text = "Score: " + currentScore.ToString();
         }
-        // Reload the current scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
