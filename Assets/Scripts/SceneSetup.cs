@@ -30,7 +30,7 @@ public class SceneSetup : MonoBehaviour
         CreateMainMenu();
     }
 
-    void EnsureScriptsExist()
+    private void EnsureScriptsExist()
     {
         EnsureScriptExists("GameController", GetGameControllerScriptContent());
         EnsureScriptExists("PlayerController", GetPlayerControllerScriptContent());
@@ -39,7 +39,7 @@ public class SceneSetup : MonoBehaviour
         EnsureScriptExists("CreateHelpMenu", GetPlaceholderScriptContent("CreateHelpMenu"));
     }
 
-    void EnsureScriptExists(string scriptName, string scriptContent)
+    private void EnsureScriptExists(string scriptName, string scriptContent)
     {
         string path = Application.dataPath + $"/Scripts/{scriptName}.cs";
         if (!File.Exists(path))
@@ -47,13 +47,13 @@ public class SceneSetup : MonoBehaviour
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, scriptContent);
             Debug.Log($"{scriptName} script created at {path}");
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.AssetDatabase.Refresh();
-            #endif
+#endif
         }
     }
 
-    string GetGameControllerScriptContent()
+    private string GetGameControllerScriptContent()
     {
         return @"
 using UnityEngine;
@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour
 ";
     }
 
-    string GetPlayerControllerScriptContent()
+    private string GetPlayerControllerScriptContent()
     {
         return @"
 using UnityEngine;
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
 ";
     }
 
-    string GetPlaceholderScriptContent(string scriptName)
+    private string GetPlaceholderScriptContent(string scriptName)
     {
         return $@"
 using UnityEngine;
@@ -149,7 +149,7 @@ public class {scriptName} : MonoBehaviour
 ";
     }
 
-    void RemoveDuplicateCameras()
+    private void RemoveDuplicateCameras()
     {
         Camera[] cameras = Object.FindObjectsByType<Camera>(FindObjectsSortMode.None);
         if (cameras.Length > 1)
@@ -162,11 +162,11 @@ public class {scriptName} : MonoBehaviour
         }
     }
 
-    void RemoveDuplicateGameObjects()
+    private void RemoveDuplicateGameObjects()
     {
         string[] objectsToCheck = {
             "MainMenuCanvas", "PlayerProfileCanvas", "BlockManager", "GameController",
-            "ScoreManager", "RetryButton", "GameOverScreen", "Blocks", 
+            "ScoreManager", "RetryButton", "GameOverScreen", "Blocks",
             "StartScreen", "HelpCenterCanvas"
         };
 
@@ -181,7 +181,7 @@ public class {scriptName} : MonoBehaviour
         }
     }
 
-    void SetupCamera()
+    private void SetupCamera()
     {
         Camera mainCamera = Camera.main;
         if (mainCamera == null)
@@ -194,15 +194,15 @@ public class {scriptName} : MonoBehaviour
 
         Debug.Log("Camera setup complete.");
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         Screen.SetResolution(1920, 1080, false);
-        #endif
+#endif
     }
 
-    void ValidateAndAttachScripts()
+    private void ValidateAndAttachScripts()
     {
         FindOrCreateGameObject("BlockManager", obj => obj.AddComponent<BlockManager>());
-        FindOrCreateGameObject("GameController", obj => 
+        FindOrCreateGameObject("GameController", obj =>
         {
             if (!obj.TryGetComponent<GameController>(out GameController controller))
             {
@@ -211,7 +211,7 @@ public class {scriptName} : MonoBehaviour
         });
     }
 
-    GameObject FindOrCreateGameObject(string name, System.Action<GameObject> setupAction)
+    private GameObject FindOrCreateGameObject(string name, System.Action<GameObject> setupAction)
     {
         GameObject obj = GameObject.Find(name);
         if (obj == null)
@@ -222,7 +222,7 @@ public class {scriptName} : MonoBehaviour
         return obj;
     }
 
-    void CreateMainMenu()
+    private void CreateMainMenu()
     {
         GameObject mainMenuCanvas = CreateCanvas("MainMenuCanvas");
 
@@ -233,7 +233,7 @@ public class {scriptName} : MonoBehaviour
         CreateButton(mainMenuCanvas.transform, "SinglePlayerButton", "Single Player", new Vector2(0, 200));
     }
 
-    GameObject CreateCanvas(string name)
+    private GameObject CreateCanvas(string name)
     {
         GameObject canvasObject = new GameObject(name);
         Canvas canvas = canvasObject.AddComponent<Canvas>();
@@ -244,7 +244,7 @@ public class {scriptName} : MonoBehaviour
         return canvasObject;
     }
 
-    GameObject CreateButton(Transform parent, string name, string buttonText, Vector2 position)
+    private GameObject CreateButton(Transform parent, string name, string buttonText, Vector2 position)
     {
         GameObject buttonObject = new GameObject(name);
         buttonObject.transform.SetParent(parent);
@@ -265,7 +265,7 @@ public class {scriptName} : MonoBehaviour
         return buttonObject;
     }
 
-    void CreateText(Transform parent, string name, string content, Vector2 position, int fontSize, TMPro.FontStyles fontStyle, Color color)
+    private void CreateText(Transform parent, string name, string content, Vector2 position, int fontSize, TMPro.FontStyles fontStyle, Color color)
     {
         GameObject textObject = new GameObject(name);
         textObject.transform.SetParent(parent);
