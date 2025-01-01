@@ -78,25 +78,11 @@ public class SceneSetup : MonoBehaviour
 
     void ValidateAndAttachScripts()
     {
-        // Validate BlockManager
         FindOrCreateGameObject("BlockManager", obj => obj.AddComponent<BlockManager>());
-
-        // Validate Player
-        FindOrCreateGameObject("Player", obj =>
-        {
-            obj.AddComponent<PlayerController>();
-        });
-
-        // Validate ScoreManager
+        FindOrCreateGameObject("Player", obj => obj.AddComponent<PlayerController>());
         FindOrCreateGameObject("ScoreManager", obj => obj.AddComponent<ScoreManager>());
-
-        // Validate GameController
         FindOrCreateGameObject("GameController", obj => obj.AddComponent<GameController>());
-
-        // Validate BlockMovement
         FindOrCreateGameObject("Blocks", obj => obj.AddComponent<BlockMovement>());
-
-        // Validate RetryButton
         FindOrCreateGameObject("RetryButton", obj => obj.AddComponent<GameOverTrigger>());
     }
 
@@ -130,10 +116,10 @@ public class SceneSetup : MonoBehaviour
         GameObject helpCenterButton = CreateButton(mainMenuCanvas.transform, "HelpCenterButton", "Help Center", new Vector2(0, -100));
 
         // Wallet Display
-        CreateWalletDisplay(mainMenuCanvas.transform, "WalletDisplay", new Vector2(-850, -450));
+        CreateText(mainMenuCanvas.transform, "WalletDisplay", "Wallet: $50.00", new Vector2(-850, -450), 24, FontStyle.Normal, Color.white);
 
         // Player Profile Icon
-        GameObject profileIcon = CreateButton(mainMenuCanvas.transform, "ProfileIcon", "", new Vector2(-950, -450));
+        GameObject profileIcon = CreateButton(mainMenuCanvas.transform, "ProfileIcon", "Profile", new Vector2(-950, -450));
         profileIcon.GetComponent<Button>().onClick.AddListener(CreatePlayerProfileMenu);
 
         // Button Functionality
@@ -223,5 +209,35 @@ public class SceneSetup : MonoBehaviour
         RectTransform rectTransform = background.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(1920, 1080);
         rectTransform.anchoredPosition = Vector2.zero;
+    }
+
+    void CreatePlayerProfileMenu()
+    {
+        GameObject profileCanvas = CreateCanvas("PlayerProfileCanvas");
+
+        // Wallet Info
+        CreateText(profileCanvas.transform, "WalletInfo", "Wallet: $50.00", new Vector2(0, 300), 40, FontStyle.Normal, Color.white);
+
+        // Manage Wallet Button
+        GameObject manageWalletButton = CreateButton(profileCanvas.transform, "ManageWalletButton", "Manage Wallet", new Vector2(0, 150));
+        manageWalletButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Debug.Log("Manage Wallet Placeholder");
+        });
+
+        // Achievements Button
+        GameObject achievementsButton = CreateButton(profileCanvas.transform, "AchievementsButton", "Achievements", new Vector2(0, 50));
+        achievementsButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Debug.Log("Achievements Placeholder");
+        });
+
+        // Back to Main Menu Button
+        GameObject backButton = CreateButton(profileCanvas.transform, "BackButton", "Back to Main Menu", new Vector2(0, -150));
+        backButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Destroy(profileCanvas);
+            CreateMainMenu();
+        });
     }
 }
