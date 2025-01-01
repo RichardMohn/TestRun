@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.IO;
 
 public class SceneSetup : MonoBehaviour
 {
@@ -12,9 +11,6 @@ public class SceneSetup : MonoBehaviour
     {
         if (hasRun) return;
         hasRun = true;
-
-        // Ensure GameController script exists
-        EnsureGameControllerScript();
 
         // Remove duplicates
         RemoveDuplicateCameras();
@@ -28,35 +24,6 @@ public class SceneSetup : MonoBehaviour
 
         // Create Main Menu
         CreateMainMenu();
-    }
-
-    void EnsureGameControllerScript()
-    {
-        string gameControllerPath = Application.dataPath + "/Scripts/GameController.cs";
-        if (!File.Exists(gameControllerPath))
-        {
-            Directory.CreateDirectory(Application.dataPath + "/Scripts");
-            File.WriteAllText(gameControllerPath, GetGameControllerScript());
-            Debug.Log("GameController script created at: " + gameControllerPath);
-            #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.Refresh();
-            #endif
-        }
-    }
-
-    string GetGameControllerScript()
-    {
-        return @"
-using UnityEngine;
-
-public class GameController : MonoBehaviour
-{
-    void Start()
-    {
-        Debug.Log(""GameController initialized!"");
-    }
-}
-";
     }
 
     void RemoveDuplicateCameras()
@@ -122,6 +89,16 @@ public class GameController : MonoBehaviour
                 controller = obj.AddComponent<GameController>();
             }
             Debug.Log("GameController script validated and attached to GameController GameObject.");
+        });
+
+        // Validate PlayerController
+        FindOrCreateGameObject("Player", obj =>
+        {
+            if (!obj.TryGetComponent<PlayerController>(out PlayerController controller))
+            {
+                controller = obj.AddComponent<PlayerController>();
+            }
+            Debug.Log("PlayerController script validated and attached to Player GameObject.");
         });
 
         // Validate ScoreManager
@@ -210,35 +187,6 @@ public class GameController : MonoBehaviour
         RectTransform rectTransform = textObject.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(800, 100);
         rectTransform.anchoredPosition = position;
-    }
-
-    GameObject CreateButton(Transform parent, string name, string buttonText, Vector2 position)
-    {
-        GameObject buttonObject = new GameObject(name);
-        buttonObject.transform.SetParent(parent);
-
-        Button button = buttonObject.AddComponent<Button>();
-        Image image = buttonObject.AddComponent<Image>();
-        image.color = new Color(0.2f, 0.6f, 0.8f);
-
-        RectTransform rectTransform = buttonObject.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(300, 80);
-        rectTransform.anchoredPosition = position;
-
-        GameObject textObject = new GameObject("ButtonText");
-        textObject.transform.SetParent(buttonObject.transform);
-
-        TextMeshProUGUI buttonTextComponent = textObject.AddComponent<TextMeshProUGUI>();
-        buttonTextComponent.text = buttonText;
-        buttonTextComponent.fontSize = 24;
-        buttonTextComponent.alignment = TextAlignmentOptions.Center;
-        buttonTextComponent.color = Color.white;
-
-        RectTransform textRect = textObject.GetComponent<RectTransform>();
-        textRect.sizeDelta = new Vector2(300, 80);
-        textRect.anchoredPosition = Vector2.zero;
-
-        return buttonObject;
     }
 
     void LoadScene(string sceneName)
