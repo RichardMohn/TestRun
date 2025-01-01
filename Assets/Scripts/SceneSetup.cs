@@ -16,11 +16,11 @@ public class SceneSetup : MonoBehaviour
         // Ensure necessary scripts exist
         EnsureScriptsExist();
 
-        // Remove duplicates
+        // Remove duplicate cameras and GameObjects
         RemoveDuplicateCameras();
         RemoveDuplicateGameObjects();
 
-        // Setup camera
+        // Setup the camera
         SetupCamera();
 
         // Validate and attach scripts
@@ -33,6 +33,7 @@ public class SceneSetup : MonoBehaviour
     void EnsureScriptsExist()
     {
         EnsureScriptExists("GameController", GetGameControllerScriptContent());
+        EnsureScriptExists("PlayerController", GetPlayerControllerScriptContent());
     }
 
     void EnsureScriptExists(string scriptName, string scriptContent)
@@ -85,6 +86,46 @@ public class GameController : MonoBehaviour
     public void ResetGame()
     {
         Score = 0;
+    }
+}
+";
+    }
+
+    string GetPlayerControllerScriptContent()
+    {
+        return @"
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float jumpForce = 10f;
+    private Rigidbody2D rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Tap or click to jump
+        {
+            Jump();
+        }
+    }
+
+    private void Jump()
+    {
+        rb.velocity = Vector2.up * jumpForce;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(""Obstacle""))
+        {
+            GameController.Instance.ResetGame();
+            UnityEngine.SceneManagement.SceneManager.LoadScene(""GameOverScene"");
+        }
     }
 }
 ";
